@@ -102,6 +102,7 @@ On macOS terminal:
 ```
 $ nano /Volumes/boot/wpa_supplicant.conf
 ```
+
 then adapt the code above and copy-paste.
 
 ### 5. Enabling Pi camera
@@ -109,6 +110,7 @@ then adapt the code above and copy-paste.
 To avoid one more reboot later, add *"start_x=1"* and *"gpu_mem=128"* to /boot/config.txt
 
 On macOS terminal:
+
 
 ```
 $ echo -e "start_x=1\ngpu_mem=128" >> /Volumes/boot/config.txt
@@ -124,26 +126,35 @@ Open a Terminal on your computer.
 
 ### 6. Find your Pi on the network
 
-Try to access it with its Bonjour name: ```
+Try to access it with its Bonjour name:
+
+```
 $ ping raspberrypi.local
 ```
 
 * if your have more than one, the name ident like this:
+
 ```
 $ ping raspberrypi-2.local
 ```
 
-else, if host is in your ARP table, you can try find its IP with this command: ```
+else, if host is in your ARP table, you can try find its IP with this command:
+
+```
 $ arp -an | grep -i b8:27:eb
 ```
 
 ### 7. Connect with SSH and configure
+
+
 ```
 $ ssh pi@raspberrypi.local
 ```
+
 (default password is *raspberry* )
 
 For security you should change the password::
+
 ```
 $ passwd
 ```
@@ -159,6 +170,7 @@ $ sudo raspi-config
 	* *[optional]* **Change Locale** (default is en_GB.UTF-8).  
 		
 ### 9. Pi Camera (if not done in step 5)
+
 ```
 $ sudo raspi-config
 ```
@@ -177,7 +189,9 @@ If a Pi camera is connected, it will automatically be configured in homebridge.
 ```
 $ wget https://github.com/LeJeko/homebridge4cam/raw/master/homegridge4cam.sh
 ```
+
 and set it executable.
+
 ```
 $ chmod +x homebridge4cam.sh
 ```
