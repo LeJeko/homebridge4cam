@@ -214,7 +214,19 @@ ssh -t pi@raspberrypi.local 'tail -f homebridge4cam.log'
 
 Full script execution takes about 10 min with Ethernet cable (and about 30 min through Wi-Fi !?!).
 
-Script terminates with a *SUCCESS* or *ERROR* message.
+Script terminates with a *SUCCESS* 
+
+```
+==>   *SUCCESS* !! : Homebridge is up and running
+==>   Web UI: http://10.0.1.14:8080 (admin/admin)
+```
+
+or *ERROR* message.
+
+```
+==> *ERROR* !! : Homebridge can't start
+==> See log below or $ journalctl -u homebridge
+```
 
 ### 13. Add automatically created accessories to Home App
 
