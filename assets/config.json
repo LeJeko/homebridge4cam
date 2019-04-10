@@ -1,0 +1,49 @@
+{
+    "bridge": {
+		 	"name": "Homebridge",
+		 	"username": "CD:22:3D:E3:CE:!RANDOMTWODIGITS!",
+			"port": 51826,
+			"pin": "031-45-!RANDOMTHREEDIGITS!"
+    },
+       
+    "accessories": [
+        {
+			"accessory": "RaspberryPiTemperature",
+            "name": "Pi Temp"
+        }
+    ],
+    
+    "platforms": [
+        {
+      		"platform": "config",
+      		"name": "Config",
+      		"port": 8080,
+            "theme": "blue",
+            "restart": "sudo -n systemctl restart homebridge",
+            "temp": "/sys/class/thermal/thermal_zone0/temp",
+            "tempUnits": "c",
+      		"sudo": true,
+      		"log": {
+        		"method": "systemd",
+        		"service": "homebridge"
+      		}
+    	},
+        {
+            "platform": "Camera-ffmpeg",
+            "cameras": [
+                {
+                    "name": "Fake Camera",
+                    "videoConfig": {
+                        "source": "-re -i /home/pi/.homebridge/FakeCamera.gif",
+                        "stillImageSource": "-i /home/pi/.homebridge/FakeCamera.png",
+                        "maxStreams": 2,
+                        "maxWidth": 1280,
+                        "maxHeight": 720,
+                        "maxFPS": 15,
+                        "vcodec": "h264_omx"
+                    }
+                }
+            ]
+        }
+    ]
+}
