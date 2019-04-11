@@ -8,7 +8,7 @@ Following steps explain how to activate SSH and configure Wi-Fi to manage it rem
 ## Why homebridge4cam ?
 There isn't a lot of HomeKit compatible IP Camera. But there are a lot of cheaper ones, even in China ;)  
 Homebridge4cam will install all needed dependencies, automatically set up the homebridge server and expose it in a Web UI on port 8080.  
-All you need to do before is to edit *config.json* with the Web UI and add your [specific camera configuration](https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki/Tested-Configurations) in the "camera-ffmpeg" platform section.  
+All you need to do after is to edit *config.json* with the Web UI and add your [specific camera configuration](https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki/Tested-Configurations) in the "camera-ffmpeg" platform section.  
 
 If you have a Pi camera connected (and activated, see below), it will be automatically added to homebridge and accessible in Home App.  
 Otherwise, a *"Fake Camera"* is created so that you can check if it is visible in the Home App.
@@ -132,7 +132,7 @@ Try to access it with its Bonjour name:
 $ ping raspberrypi.local
 ```
 
-* if your have more than one, the name ident like this:
+If your have more than one, the name ident like this:
 
 ```
 $ ping raspberrypi-2.local
@@ -214,14 +214,14 @@ ssh -t pi@raspberrypi.local 'tail -f homebridge4cam.log'
 
 Full script execution takes about 10 min with Ethernet cable (and about 30 min through Wi-Fi !?!).
 
-Script terminates with a *SUCCESS* 
+Script terminates with a **SUCCESS** 
 
 ```
 ==>   *SUCCESS* !! : Homebridge is up and running
 ==>   Web UI: http://10.0.1.14:8080 (admin/admin)
 ```
 
-or *ERROR* message.
+or an **ERROR** message.
 
 ```
 ==> *ERROR* !! : Homebridge can't start
