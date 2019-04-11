@@ -43,7 +43,7 @@ iOS App: [Homebridge for RaspberryPi](https://itunes.apple.com/us/app/homebridge
 * Use systemd
 * Use journalctl
 
-#=============================
+# =============================
 ## Start install Raspi headless from scratch
 
 You need:
