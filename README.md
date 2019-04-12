@@ -216,24 +216,24 @@ ssh -t pi@raspberrypi.local 'tail -f homebridge4cam.log'
 
 Full script execution takes about 10 min with Ethernet cable (and about 30 min through Wi-Fi !?!).
 
-Script terminates with a **SUCCESS** 
-
-```
-==>   *SUCCESS* !! : Homebridge is up and running
-==>   Web UI: http://10.0.1.14:8080 (admin/admin)
-```
-
-or an **ERROR** message.
+Script terminates with an **ERROR**
 
 ```
 ==> *ERROR* !! : Homebridge can't start
 ==> See log below or $ journalctl -u homebridge
 ```
 
+or a **SUCCESS** 
+
+```
+==>   *SUCCESS* !! : Homebridge is up and running
+==>   PIN : 031-45-154
+==>   Web UI: http://10.0.1.14:8080 (admin/admin)
+```
+Please note the PIN code to continue (else visible in Web UI).
+
 ### 13. Add automatically created accessories to Home App
 
-* Go to the web UI and login (admin/admin): [http://raspberry.local:8080](http://raspberry.local:8080) 
-* You can now see the PIN code
 * Launch Home App in your iOS Device and add an accessory
 * Do not scan the QR code, choose **No code or can't scan code** option instead
 * You can see a bridge named **homebridge** and a camera named **Fake Camera** or **Pi Cam**

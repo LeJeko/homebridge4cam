@@ -204,8 +204,7 @@ echo "INSTALLING NODE JS"
 echo "***************************************************"
 echo "`date`  ==  Start installing node js" >> $LOG_PATH
 arch=`uname -m`
-node_version=`node --version`
-if ! [ "$node_version" = "v9.9.0" ]; then
+if ! [ "`node --version`" = "v9.9.0" ]; then
 	if [ "$arch" = "armv6l" ]; then
     	echo "Hardware: RaspberryPi Zero or 1"
     	wget https://nodejs.org/dist/v9.9.0/node-v9.9.0-linux-armv6l.tar.gz
