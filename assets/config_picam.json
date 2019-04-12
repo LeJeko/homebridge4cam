@@ -32,7 +32,7 @@
             "platform": "Camera-ffmpeg",
             "cameras": [
                 {
-                    "name": "Pi Cam",
+                    "name": "Pi Camera",
                     "videoConfig": {
                         "source": "-re -r 6 -s 1280x720 -f video4linux2 -i /dev/video0",
                         "stillImageSource": "-s 1280x720 -f video4linux2 -i /dev/video0",

@@ -10,6 +10,8 @@ There isn't a lot of HomeKit compatible IP Camera. But there are a lot of cheape
 Homebridge4cam will install all needed dependencies, automatically set up the homebridge server and expose it in a Web UI on port 8080.  
 All you need to do after is to edit *config.json* with the Web UI and add your [specific camera configuration](https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki/Tested-Configurations) in the "camera-ffmpeg" platform section.  
 
+Homebridge4cam will also handle broken installation and try to fix it.
+
 If you have a Pi camera connected (and activated, see below), it will be automatically added to homebridge and accessible in Home App.  
 Otherwise, a *"Fake Camera"* is created so that you can check if it is visible in the Home App.
 
@@ -177,7 +179,7 @@ $ sudo raspi-config
 
 * If you haven't done in step 5, ensure the Camera interface is enabled in **Interfacing options -> Camera**
 
-	* **Activating Camera interface will require restarting. before continue**  
+	* **Activating Camera interface will require restarting before continue**  
 	The script is only able to install the driver if the camera interface is enabled.
 
 If a Pi camera is connected, it will automatically be configured in homebridge.
@@ -187,7 +189,7 @@ If a Pi camera is connected, it will automatically be configured in homebridge.
 ### 10. Download homebridge4cam script 
 
 ```
-$ wget https://github.com/LeJeko/homebridge4cam/raw/master/homegridge4cam.sh
+$ wget https://github.com/LeJeko/homebridge4cam/raw/master/homebridge4cam.sh
 ```
 
 and set it executable.

@@ -14,6 +14,8 @@ USERNAME=pi
 INSTALL_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 LOG_PATH="$INSTALL_PATH/homebridge4cam.log"
 SOURCES_PATH="https://github.com/LeJeko/homebridge4cam/raw/master/assets"
+RANDOMTWODIGITS=""
+RANDOMTHREEDIGITS=""
 
 cd $INSTALL_PATH
 
@@ -121,15 +123,14 @@ if [ "${camera_states[@]:0:1}" = "supported=1" ]; then
 	echo "***************************************************"
 	echo "INSTALLING PI CAMERA DRIVER"
 	echo "***************************************************"
-	echo "`date`  ==  Installing PiCam driver" >> $LOG_PATH
-	echo "" >> $LOG_PATH
+	echo -e "`date`  ==  Installing PiCam driver\n" >> $LOG_PATH
 	modprobe bcm2835-v4l2
 	if ! grep -Fxq "bcm2835-v4l2" /etc/modules; then
 		echo "bcm2835-v4l2" >> /etc/modules
 	fi
 fi
 
-echo "***************************************************"
+echo -e "\n***************************************************"
 echo "UPDATING & UPGRADING"
 echo "***************************************************"
 echo "`date`  ==  Start updating & upgrading" >> $LOG_PATH
@@ -157,6 +158,44 @@ apt-get -yq install sysstat --show-progress
 apt-get -yq install gcc-4.9 g++-4.9 --show-progress
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.7
+
+print_time
+# Install FFmpeg
+
+echo "***************************************************"
+echo "INSTALLING FFMPEG"
+echo "***************************************************"
+echo "`date`  ==  Start installing FFMpeg" >> $LOG_PATH
+
+sudo apt-get -yq install ffmpeg --show-progress
+
+# Handle broken installation and try to fix
+if [ "`which ffmpeg`" = "" ] || [ -f debug ]; then
+	print_time
+	if ! [ -f retry ]; then
+		touch retry
+		rm debug
+		echo "`date`  ==  *ERROR* : Installation failed. Trying to fix...." >> $LOG_PATH
+		echo -e "\n==> *ERROR* !! : Installation failed. Trying to fix...."
+		apt -yq --fix-broken install
+		print_time
+		echo "`date`  ==  Relaunching script..." >> $LOG_PATH
+		echo -e "\n==> Relaunching script..."
+		$0
+		exit 0
+	else
+		echo "`date`  ==  *ERROR* : Installation failed. See full log." >> $LOG_PATH
+		echo -e "\n==> *ERROR* !! : Installation failed. See full log."
+		echo -e "==> or try $ sudo apt --fix-broken install and relaunch script\n"
+		rm retry
+		print_time
+		exit 1
+	fi
+fi
+
+if [ -f retry ]; then
+	rm retry
+fi
 
 print_time
 # Install NODE JS
@@ -208,16 +247,6 @@ apt-get -yq install build-essential --show-progress
 apt-get -yq install git --show-progress
 
 print_time
-# Install FFmpeg
-
-echo "***************************************************"
-echo "INSTALLING FFMPEG"
-echo "***************************************************"
-echo "`date`  ==  Start installing FFMpeg" >> $LOG_PATH
-
-sudo apt-get -yq install ffmpeg --show-progress
-
-print_time
 # Install Homebridge
 echo "***************************************************"
 echo "INSTALLING HOMEBRIDGE "
@@ -257,10 +286,11 @@ then
 		wget $SOURCES_PATH/FakeCamera.png -O .homebridge/FakeCamera.png
 		wget $SOURCES_PATH/FakeCamera.gif -O .homebridge/FakeCamera.gif
 	fi
-
+	
 	RANDOMTWODIGITS=$(shuf -i 10-99 -n 1)
-	sed -i "s#!RANDOMTWODIGITS!#$RANDOMTWODIGITS#g" .homebridge/config.json
 	RANDOMTHREEDIGITS=$(shuf -i 100-999 -n 1)
+	
+	sed -i "s#!RANDOMTWODIGITS!#$RANDOMTWODIGITS#g" .homebridge/config.json
 	sed -i "s#!RANDOMTHREEDIGITS!#$RANDOMTHREEDIGITS#g" .homebridge/config.json
 else
 	echo "`date`  ==  ** config.json exist, no modifications done!"
@@ -304,26 +334,24 @@ running=`systemctl status homebridge |grep -e "active (running)"`
 
 if [ "$running" = "" ]
 	then
-		echo "`date`  ==  *ERROR* : Homebridge can't start" >> $LOG_PATH
-		echo "==================================================="
-		echo "***************************************************"
-		echo ""
-		echo "==> *ERROR* !! : Homebridge can't start"
-		echo "==> See log below or $ journalctl -u homebridge"
-		echo ""
-		echo "***************************************************"
-		echo "==================================================="
+		echo -e "`date`  ==  *ERROR* : Homebridge can't start\n" >> $LOG_PATH
+		echo -e "\n==================================================="
+		echo -e "==> *ERROR* !! : Homebridge can't start"
+		echo -e "==> See log below or $ journalctl -u homebridge\n"
+		echo -e "===================================================\n"
 	else
 		raspi_ip=`hostname -I | sed 's/ //g'`
 		echo -e "\n`date`  ==  *SUCCESS* : Homebridge is up and running" >> $LOG_PATH
+		echo -e "\n==================================================="
+		echo -e "\n==>   *SUCCESS* !! : Homebridge is up and running"
+		
+		if ! [ $RANDOMTHREEDIGITS = "" ]; then
+			echo -e "`date`  ==  PIN : 031-45-$RANDOMTHREEDIGITS" >> $LOG_PATH
+			echo -e "==>   PIN : 031-45-$RANDOMTHREEDIGITS"
+		fi
+
 		echo -e "`date`  ==  Web UI: http://$raspi_ip:8080 (admin/admin)\n" >> $LOG_PATH
-		echo "==================================================="
-		echo "***************************************************"
-		echo ""
-		echo "==>   *SUCCESS* !! : Homebridge is up and running"
-		echo "==>   Web UI: http://$raspi_ip:8080 (admin/admin)"
-		echo ""
-		echo "***************************************************"
+		echo -e "==>   Web UI: http://$raspi_ip:8080 (admin/admin)\n"
 		echo "==================================================="
 fi
 
@@ -333,5 +361,3 @@ cat /dev/null > ~/.bash_history
 echo "FINISH!"
 echo "`date`  ==  ** Script finished!**" >> $LOG_PATH
 print_time
-
-exit 0
